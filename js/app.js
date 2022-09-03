@@ -13,6 +13,7 @@ const loadNews = async (id) => {
 const displayNews = (news) => {
     diplayNewsLength(news);
     toggleSpinner(true);
+    console.log(news);
     const newsContainer = document.getElementById('news-container');
     newsContainer.innerHTML = ``;
 
@@ -28,7 +29,8 @@ const displayNews = (news) => {
         newsDiv.classList.add('col');
         const details = newsPortal.details.length;
         newsDiv.innerHTML = `
-        <div class="card mb-3">
+        <div onclick="loadNewsDetails('${newsPortal._id}')" data-bs-toggle="modal" data-bs-target="#newsDetailModal"
+         class="card mb-3">
             <div class="row g-0">
                 <div class="col-md-3">
                     <img src="${newsPortal.thumbnail_url}" class="img-fluid h-100 w-100 rounded-start"
@@ -37,17 +39,18 @@ const displayNews = (news) => {
                 <div class="col-md-9 d-flex justify-content-center">
                     <div class="card-body lh-1">
                         <h5 class="card-title fw-bold fs-4">${newsPortal.title}</h5>
-                        <p class="card-text text-muted">
+                        <p class="card-text text-muted">${newsPortal.details.slice(0, 500)}</p>
                         <div class="d-flex align-items-center justify-content-between margin-top">
                             <div class="d-flex align-items-center">
                                 <div>
-                                    <img style='width: 50px; border-radius:50px; height: 50px;' src="${newsPortal.author.img}" alt="">
+                                    <img style='width: 50px; border-radius:50px; height: 50px;' 
+                                    src="${newsPortal.author.img}" alt="">
                                 </div>
                                 <h5 class="fs-6 mx-2">${newsPortal.author ? newsPortal.author.name : 'No Author Name'}<br>
                                     <small class="text-muted">${newsPortal.author.published_date}</small>
                                 </h5>
                             </div>
-                            <div>
+                        <div>
                                 <span><i class="fa-solid fa-eye"></i> ${newsPortal.total_view} Views</span>
                             </div>
                             <div class='d-none d-md-inline-block'>
@@ -85,5 +88,27 @@ const toggleSpinner = isLoading => {
     } else {
         loaderSection.classList.add('d-none')
     }
+}
+
+const loadNewsDetails = async (NewsId) => {
+    const url = `https://openapi.programming-hero.com/api/news/${NewsId}`;
+    try{
+        const res = await fetch(url);
+        const data = await res.json();
+        displayNewsDetails(data.data[0]); 
+    }
+    catch(e){
+        console.log(e);
+    }
+}
+const displayNewsDetails = (newsDetails) => {
+    console.log(newsDetails);
+    const modalTitle = document.getElementById('newsDetailModalLabel');
+    modalTitle.innerText = newsDetails.title;
+    const phoneDetails = document.getElementById('news-details');
+    phoneDetails.innerHTML = `
+    <img src="${newsDetails.thumbnail_url}" class="h-50 w-75 rounded-start" alt="...">
+    `;
+
 }
 // loadNews('01');
