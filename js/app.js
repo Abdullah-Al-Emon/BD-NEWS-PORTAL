@@ -117,7 +117,7 @@ const displayNewsDetails = (newsDetails) => {
     <div>
     <span><i class="fa-solid fa-eye"></i> ${newsDetails.total_view ? newsDetails.total_view  : 'No '} Views</span>
     </div>
-    <p class="card-text text-muted">${newsDetails.details.slice(0, 500)}</p>
+    <p class="card-text text-muted">${newsDetails.details}</p>
     `;
 
 }
