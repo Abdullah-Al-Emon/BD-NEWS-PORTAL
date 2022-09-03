@@ -53,7 +53,7 @@ const displayNews = (news) => {
                                 </h5>
                             </div>
                         <div>
-                                <span><i class="fa-solid fa-eye"></i> ${newsPortal.total_view} Views</span>
+                                <span><i class="fa-solid fa-eye"></i> ${newsPortal.total_view ? newsPortal.total_view : 'No'} Views</span>
                             </div>
                             <div class='d-none d-md-inline-block'>
                                 <i class="fa-solid text-warning fa-star"></i>
