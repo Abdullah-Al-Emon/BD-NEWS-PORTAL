@@ -121,4 +121,3 @@ const displayNewsDetails = (newsDetails) => {
     `;
 
 }
-// loadNews('01');
