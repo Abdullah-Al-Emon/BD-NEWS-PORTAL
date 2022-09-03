@@ -46,12 +46,12 @@ const displayNews = (news) => {
                                     <img style='width: 50px; border-radius:50px; height: 50px;' 
                                     src="${newsPortal.author.img}" alt="">
                                 </div>
-                                <h5 class="fs-6 mx-2">${newsPortal.author ? newsPortal.author.name : 'No Author Name'}<br>
+                                <h5 class="fs-6 mx-2">${newsPortal.author.name ? newsPortal.author.name : 'No Author Name'}<br>
                                     <small class="text-muted">${newsPortal.author.published_date}</small>
                                 </h5>
                             </div>
                         <div>
-                                <span><i class="fa-solid fa-eye"></i> ${newsPortal.total_view} Views</span>
+                                <span><i class="fa-solid fa-eye"></i> ${newsPortal.total_view ? newsPortal.total_view  : 'No '} Views</span>
                             </div>
                             <div class='d-none d-md-inline-block'>
                                 <i class="fa-solid text-warning fa-star"></i>
@@ -107,7 +107,17 @@ const displayNewsDetails = (newsDetails) => {
     modalTitle.innerText = newsDetails.title;
     const phoneDetails = document.getElementById('news-details');
     phoneDetails.innerHTML = `
-    <img src="${newsDetails.thumbnail_url}" class="h-50 w-75 rounded-start" alt="...">
+    <div>
+    <img style='width: 50px; border-radius:50px; height: 50px;' 
+    src="${newsDetails.author.img}" alt="">
+    </div>
+    <h5 class="fs-6 mx-2">${newsDetails.author.name ? newsDetails.author.name : 'No Author Name'}<br>
+    <small class="text-muted">${newsDetails.author.published_date}</small>
+    </h5>
+    <div>
+    <span><i class="fa-solid fa-eye"></i> ${newsDetails.total_view ? newsDetails.total_view  : 'No '} Views</span>
+    </div>
+    <p class="card-text text-muted">${newsDetails.details.slice(0, 500)}</p>
     `;
 
 }
