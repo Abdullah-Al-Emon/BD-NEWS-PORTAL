@@ -1,11 +1,11 @@
 const loadNews = async (id) => {
     const url = `https://openapi.programming-hero.com/api/news/category/${id}`;
-    try{
+    try {
         const res = await fetch(url);
-    const data = await res.json();
-    displayNews(data.data);
+        const data = await res.json();
+        displayNews(data.data);
     }
-    catch(e){
+    catch (e) {
         console.log(e);
     }
 }
@@ -13,21 +13,23 @@ const loadNews = async (id) => {
 const displayNews = (news) => {
     diplayNewsLength(news);
     toggleSpinner(true);
-    console.log(news);
+    // console.log(news);
     const newsContainer = document.getElementById('news-container');
     newsContainer.innerHTML = ``;
 
     // display no news found 
     const noNews = document.getElementById('no-found-news');
-    if(news.length === 0){
+    if (news.length === 0) {
         noNews.classList.remove('d-none');
-    }else{
+    } else {
         noNews.classList.add('d-none')
     }
+    const array = news;
+    const array1 = array.sort((a, b) => b.total_view - a.total_view);
+    // console.log(array1)
     news.forEach(newsPortal => {
         const newsDiv = document.createElement('div');
         newsDiv.classList.add('col');
-        const details = newsPortal.details.length;
         newsDiv.innerHTML = `
         <div onclick="loadNewsDetails('${newsPortal._id}')" data-bs-toggle="modal" data-bs-target="#newsDetailModal"
          class="card mb-3">
@@ -39,7 +41,7 @@ const displayNews = (news) => {
                 <div class="col-md-9 d-flex justify-content-center">
                     <div class="card-body lh-1">
                         <h5 class="card-title fw-bold fs-4">${newsPortal.title}</h5>
-                        <p class="card-text text-muted">${newsPortal.details.slice(0, 500)}</p>
+                        <p class="card-text text-muted">${newsPortal.details.length >= 100 ? newsPortal.details.slice(0, 500) + '...' : 'no data'}</p>
                         <div class="d-flex align-items-center justify-content-between margin-top">
                             <div class="d-flex align-items-center">
                                 <div>
@@ -51,7 +53,7 @@ const displayNews = (news) => {
                                 </h5>
                             </div>
                         <div>
-                                <span><i class="fa-solid fa-eye"></i> ${newsPortal.total_view ? newsPortal.total_view  : 'No '} Views</span>
+                                <span><i class="fa-solid fa-eye"></i> ${newsPortal.total_view} Views</span>
                             </div>
                             <div class='d-none d-md-inline-block'>
                                 <i class="fa-solid text-warning fa-star"></i>
@@ -92,17 +94,17 @@ const toggleSpinner = isLoading => {
 
 const loadNewsDetails = async (NewsId) => {
     const url = `https://openapi.programming-hero.com/api/news/${NewsId}`;
-    try{
+    try {
         const res = await fetch(url);
         const data = await res.json();
-        displayNewsDetails(data.data[0]); 
+        displayNewsDetails(data.data[0]);
     }
-    catch(e){
+    catch (e) {
         console.log(e);
     }
 }
 const displayNewsDetails = (newsDetails) => {
-    console.log(newsDetails);
+    // console.log(newsDetails);
     const modalTitle = document.getElementById('newsDetailModalLabel');
     modalTitle.innerText = newsDetails.title;
     const phoneDetails = document.getElementById('news-details');
@@ -115,7 +117,7 @@ const displayNewsDetails = (newsDetails) => {
     <small class="text-muted">${newsDetails.author.published_date}</small>
     </h5>
     <div>
-    <span><i class="fa-solid fa-eye"></i> ${newsDetails.total_view ? newsDetails.total_view  : 'No '} Views</span>
+    <span><i class="fa-solid fa-eye"></i> ${newsDetails.total_view ? newsDetails.total_view : 'No '} Views</span>
     </div>
     <p class="card-text text-muted">${newsDetails.details}</p>
     `;
